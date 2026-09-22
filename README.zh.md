@@ -9,17 +9,21 @@
 ## DSH 兼容性
 
 同一个包覆盖旧版和当前的 DSH 设置 API。它在运行时判断宿主，不会因为 DSH
-较旧就要求另装一个包。
+较旧就要求另装一个包。**最低支持的 DSH 宿主版本是 `0.1.0-rc.8`**；更早版本
+不在支持范围内。
 
-| DSH 宿主 | 已支持并验证的基线版本 | 可用功能 |
-|---|---|---|
-| 早期旧版 UI | `0.1.1-rc.2`、`0.1.2-alpha.2` | 侧边栏小组件、同源用量代理、聊天命令和旧槽位加载路径。该宿主没有插件卡时，直接通过 `settings.yaml` 配置。 |
-| 旧 Settings 接口 | `0.1.6-alpha.1` | 使用 `settings.register()` / `get()` / `update()`，并提供旧版 `settings.plugin.item` 配置卡。 |
-| Loader Config 接口 | `0.1.7-alpha.1` | 使用 Loader entry 和 `configEditor`，渲染 `plugins.bundle.config`，并在 HMR 时安全释放 Web 路由。 |
+| DSH 宿主 | 可用功能 |
+|---|---|
+| 旧 Settings 接口（`0.1.0-rc.8` 至 `0.1.6-alpha.2`） | 侧边栏小组件、同源用量代理、聊天命令，以及通过 `settings.register()` / `get()` / `update()` 配置。宿主提供该槽位时，显示旧版 `settings.plugin.item` 配置卡。 |
+| Loader Config 接口（`0.1.7-alpha.1`、`0.1.7-alpha.2`） | 使用 Loader entry 和 `configEditor`，渲染 `plugins.bundle.config`，并在 HMR 时安全释放 Web 路由。 |
 
-Schema 刻意保持为非 volatile，因此旧版 Schemastery 也可以加载。后续 `0.1.x`
-宿主只要保留 Loader Config 接口，就会自动走新版路径。包内还带有中英文 Plugin
-Manager 元数据；旧宿主会安全回退到 `package.json` 里的英文说明。
+Schema 刻意保持为非 volatile，因此最早旧版宿主随附的 Schemastery 也可以加载。后续
+DSH 预发布版只有在仍保留上述两类接口之一时才承诺支持；预发布 API 不视为稳定。
+包内还带有中英文 Plugin Manager 元数据；旧宿主会安全回退到 `package.json` 里的
+英文说明。
+
+`x-opencode-session` 修复是机会式能力：宿主没有在 `llm/stream` 提供 session id
+时，它会保持未激活；额度小组件、同源代理和 `/opencode-go` 命令仍可正常工作。
 
 ## 功能
 

@@ -76,7 +76,7 @@ function mockGateway(t, calls) {
 	});
 }
 
-test("DSH 0.1.6 keeps register/get settings behavior", async (t) => {
+test("DSH 0.1.0 legacy Settings keeps register/get settings behavior", async (t) => {
 	const calls = [];
 	mockGateway(t, calls);
 	const rawConfig = { baseUrl: "https://base.example/go" };

@@ -10,18 +10,23 @@ A [DSH](https://github.com/deepseek-ai/deepseek-harness) (DeepSeek Harness) plug
 
 One package covers the old and current DSH settings APIs. It detects the host
 at runtime; users do not need a different package merely because their DSH is
-older.
+older. The **minimum supported DSH host is `0.1.0-rc.8`**; earlier releases are
+not supported.
 
-| DSH host | Supported / verified baseline | Available surface |
-|---|---|---|
-| Early legacy UI | `0.1.1-rc.2`, `0.1.2-alpha.2` | Sidebar widget, same-origin usage proxy, chat command, and the legacy slot-loading path. Configure through `settings.yaml` when that host has no plugin card. |
-| Legacy Settings | `0.1.6-alpha.1` | Uses `settings.register()` / `get()` / `update()` and the legacy `settings.plugin.item` configuration card. |
-| Loader Config | `0.1.7-alpha.1` | Uses the Loader entry and `configEditor`, renders `plugins.bundle.config`, and releases web routes safely during HMR. |
+| DSH host | Available surface |
+|---|---|
+| Legacy Settings (`0.1.0-rc.8` through `0.1.6-alpha.2`) | Sidebar widget, same-origin usage proxy, chat command, and configuration through `settings.register()` / `get()` / `update()`. The legacy `settings.plugin.item` card appears when the host exposes it. |
+| Loader Config (`0.1.7-alpha.1`, `0.1.7-alpha.2`) | Uses the Loader entry and `configEditor`, renders `plugins.bundle.config`, and releases web routes safely during HMR. |
 
-The schema intentionally remains non-volatile, so old Schemastery versions can
-load it. Later `0.1.x` hosts use the Loader Config path when they retain that
-interface. English and Chinese Plugin Manager metadata are bundled too; older
+The schema intentionally remains non-volatile, so the earliest legacy
+Schemastery can load it. A later DSH prerelease is supported only while it
+retains one of the two interfaces above; prerelease APIs are not assumed
+stable. English and Chinese Plugin Manager metadata are bundled too; older
 hosts safely fall back to the English `package.json` description.
+
+The `x-opencode-session` helper is opportunistic: on a host that does not
+deliver a session id on `llm/stream`, it stays inactive. The quota widget,
+same-origin proxy, and `/opencode-go` command continue to work.
 
 ## Features
 

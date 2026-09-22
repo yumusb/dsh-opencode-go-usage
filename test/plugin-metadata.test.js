@@ -18,13 +18,16 @@ test("package publishes DSH-localized Usage metadata", async () => {
 	assert.ok(manifest.files.includes("assets/*.svg"));
 	assert.match(icon, /^<svg\b/);
 	assert.ok(Buffer.byteLength(icon, "utf8") <= 256 * 1024);
-	assert.equal(manifest.version, "1.4.0");
+	assert.equal(manifest.version, "1.4.1");
 	assert.equal(typeof manifest.description, "string");
+	assert.equal(manifest.engines.node, ">=18");
 	assert.equal(en.meta.title, "OpenCode GO Usage");
 	assert.equal(zh.meta.description, "在侧边栏显示 OpenCode GO 套餐额度，安全代理用量查询，并提供 /opencode-go 命令。");
 	assert.match(import.meta.resolve("dsh-opencode-go-usage/locale/zh.json"), /locale\/zh\.json$/);
 	assert.match(readme, /## DSH compatibility/);
-	assert.match(readme, /`0\.1\.1-rc\.2`/);
+	assert.match(readme, /`0\.1\.0-rc\.8`/);
 	assert.match(readme, /`0\.1\.7-alpha\.1`/);
+	assert.match(readme, /`0\.1\.7-alpha\.2`/);
 	assert.match(readmeZh, /## DSH 兼容性/);
+	assert.match(readmeZh, /`0\.1\.0-rc\.8`/);
 });
