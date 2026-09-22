@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "OpenCode GO 用量",
+    "description": "在侧边栏显示 OpenCode GO 套餐额度，安全代理用量查询，并提供 /opencode-go 命令。"
+  }
+}

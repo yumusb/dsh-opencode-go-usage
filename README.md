@@ -6,7 +6,22 @@ English | [中文](README.zh.md)
 
 A [DSH](https://github.com/deepseek-ai/deepseek-harness) (DeepSeek Harness) plugin that watches your **OpenCode GO plan** quota — the $10/month subscription that gives you usage limits on open-source models (rolling 5-hour, weekly, and monthly windows).
 
-Compatible with DSH `0.1.1-rc.2` and `0.1.2-alpha.2`.
+## DSH compatibility
+
+One package covers the old and current DSH settings APIs. It detects the host
+at runtime; users do not need a different package merely because their DSH is
+older.
+
+| DSH host | Supported / verified baseline | Available surface |
+|---|---|---|
+| Early legacy UI | `0.1.1-rc.2`, `0.1.2-alpha.2` | Sidebar widget, same-origin usage proxy, chat command, and the legacy slot-loading path. Configure through `settings.yaml` when that host has no plugin card. |
+| Legacy Settings | `0.1.6-alpha.1` | Uses `settings.register()` / `get()` / `update()` and the legacy `settings.plugin.item` configuration card. |
+| Loader Config | `0.1.7-alpha.1` | Uses the Loader entry and `configEditor`, renders `plugins.bundle.config`, and releases web routes safely during HMR. |
+
+The schema intentionally remains non-volatile, so old Schemastery versions can
+load it. Later `0.1.x` hosts use the Loader Config path when they retain that
+interface. English and Chinese Plugin Manager metadata are bundled too; older
+hosts safely fall back to the English `package.json` description.
 
 ## Features
 
@@ -14,6 +29,7 @@ Compatible with DSH `0.1.1-rc.2` and `0.1.2-alpha.2`.
 - **`/opencode-go` chat command** — prints the same numbers as text inside any conversation.
 - **Same-origin proxy** — the host registers `GET /opencode-go/usage`, forwards to the official GO gateway with your API key. The key never reaches the browser and no CORS is involved.
 - **`x-opencode-session` fix** — at runtime, injects the real harness session id into OpenCode GO gateway chat requests (the gateway 400s requests without it). No DSH file patching; survives upgrades.
+- **Configuration card** — edit the gateway, credential reference, cache, update check, session-header fix and rolling-window label in either DSH settings generation.
 
 ## The `x-opencode-session` fix
 
@@ -91,13 +107,19 @@ dsh plugin --profile web add /path/to/dsh-opencode-go-usage
 
 ## Config reference
 
-| key | default | description |
-|---|---|---|
+On DSH `0.1.7-alpha.1`, open **Plugins → OpenCode GO Usage**. Legacy hosts
+that expose plugin settings cards use their Settings page instead. Both paths
+persist the same `dsh-opencode-go-usage` namespace; API-key material remains in
+the DSH credentials store and is never sent back to the browser.
+
 | key | default | description |
 |---|---|---|
 | `apiKeyEnv` | `OPENCODE_GO_API_KEY` | credential reference / env var name for the API key |
 | `baseUrl` | `https://opencode.ai/zen/go` | gateway base URL |
 | `cacheMs` | `30000` | host-side upstream cache TTL |
+| `updateCheck` | `true` | check npm for a newer plugin version; turning it off makes no registry request |
+| `injectSessionHeader` | `true` | inject the required `x-opencode-session` header for GO chat calls |
+| `rollingWindowLabel` | `5h` | display-only label beside the rolling quota window |
 
 ## The usage API
 

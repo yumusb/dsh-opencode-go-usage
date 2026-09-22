@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "OpenCode GO Usage",
+    "description": "Show OpenCode GO plan quotas in the sidebar, proxy usage safely, and provide the /opencode-go command."
+  }
+}

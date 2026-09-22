@@ -6,7 +6,20 @@
 
 [DSH](https://github.com/deepseek-ai/deepseek-harness)(DeepSeek Harness)插件:监控你的 **OpenCode GO 套餐**额度 —— 10 美元/月的订阅,按模型提供滚动 5 小时 / 每周 / 每月三个窗口的用量限额。
 
-兼容 DSH `0.1.1-rc.2` 与 `0.1.2-alpha.2`。
+## DSH 兼容性
+
+同一个包覆盖旧版和当前的 DSH 设置 API。它在运行时判断宿主，不会因为 DSH
+较旧就要求另装一个包。
+
+| DSH 宿主 | 已支持并验证的基线版本 | 可用功能 |
+|---|---|---|
+| 早期旧版 UI | `0.1.1-rc.2`、`0.1.2-alpha.2` | 侧边栏小组件、同源用量代理、聊天命令和旧槽位加载路径。该宿主没有插件卡时，直接通过 `settings.yaml` 配置。 |
+| 旧 Settings 接口 | `0.1.6-alpha.1` | 使用 `settings.register()` / `get()` / `update()`，并提供旧版 `settings.plugin.item` 配置卡。 |
+| Loader Config 接口 | `0.1.7-alpha.1` | 使用 Loader entry 和 `configEditor`，渲染 `plugins.bundle.config`，并在 HMR 时安全释放 Web 路由。 |
+
+Schema 刻意保持为非 volatile，因此旧版 Schemastery 也可以加载。后续 `0.1.x`
+宿主只要保留 Loader Config 接口，就会自动走新版路径。包内还带有中英文 Plugin
+Manager 元数据；旧宿主会安全回退到 `package.json` 里的英文说明。
 
 ## 功能
 
@@ -14,6 +27,7 @@
 - **`/opencode-go` 聊天命令**:在对话中以文本输出同样的三个窗口数字。
 - **同源代理**:host 端注册 `GET /opencode-go/usage`,携带你的 API key 转发到官方 GO 网关。key 永不进入浏览器,也没有 CORS 问题。
 - **`x-opencode-session` 修复**:运行时自动为 OpenCode GO 网关的聊天请求注入真实会话 ID(网关对缺失该头的请求返回 400)。不修改 DSH 安装文件,升级不失效。
+- **配置卡**:可在两代 DSH 设置界面中修改网关、凭据引用、缓存、更新检查、会话头修复和滚动窗口标签。
 
 ## `x-opencode-session` 修复
 
@@ -87,11 +101,18 @@ dsh plugin --profile web add /path/to/dsh-opencode-go-usage
 
 ## 配置项
 
+DSH `0.1.7-alpha.1` 请打开 **插件 → OpenCode GO 用量**。提供插件设置卡的旧版
+DSH 则从其设置页进入。两条路径都写入同一个 `dsh-opencode-go-usage` 命名空间；
+API key 始终保存在 DSH 凭据存储中，绝不会返回给浏览器。
+
 | 键 | 默认 | 说明 |
 |---|---|---|
 | `apiKeyEnv` | `OPENCODE_GO_API_KEY` | API key 的 credential 引用 / 环境变量名 |
 | `baseUrl` | `https://opencode.ai/zen/go` | 网关 base URL |
 | `cacheMs` | `30000` | host 端上游缓存 TTL |
+| `updateCheck` | `true` | 检查 npm 是否有新版；关闭后不会发起任何 registry 请求 |
+| `injectSessionHeader` | `true` | 为 GO 聊天请求注入必需的 `x-opencode-session` 头 |
+| `rollingWindowLabel` | `5h` | 滚动额度窗口旁的纯展示标签 |
 
 ## 用量 API
 
