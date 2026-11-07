@@ -2,6 +2,23 @@
 
 [English](README.md) | 中文
 
+> ## ⛔ 已废弃 —— 功能已合并进 [`dsh-opencode-go-plus`](https://www.npmjs.com/package/dsh-opencode-go-plus) v1.2.0
+>
+> 本插件不再维护。它的套餐用量组件（侧边栏底部的滚动 / 每周 / 月额度进度条、重置倒计时、收起态百分比徽标）已成为 **`dsh-opencode-go-plus` ≥ 1.2.0** 的内置功能：读同一份 `OPENCODE_GO_API_KEY`，在该插件的设置卡片里用**「在侧边栏显示套餐用量」**开关控制。原来的 `/opencode-go` 命令并入为 `/opencode-go-plus-usage`，同源代理 `/opencode-go/usage` 变为 `/dsh-opencode-go-plus/usage`。
+>
+> **迁移方式：**
+>
+> ```bash
+> dsh plugin --profile web add dsh-opencode-go-plus@1.2.0   # 或更新版本
+> dsh plugin --profile web remove dsh-opencode-go-usage
+> ```
+>
+> 两个都装着的话，侧边栏会**出现两个**用量组件——把本插件移除即可。
+>
+> **没有搬过去的部分：** npm 更新徽标；以及给 `llm-pi-ai` 路由补 `x-opencode-session` 的 fetch 包装——`dsh-opencode-go-plus` 自带适配器、本来就自己发这个头，不需要它。
+>
+> 本包在 npm 上所有版本都已标记废弃并附带上述提示。本 README 其余内容保留，用于查阅最后一个版本（v1.4.1）。
+
 > ⚡ **OpenCode GO 套餐**: [buycodingplan.com](https://buycodingplan.com/)
 
 [DSH](https://github.com/deepseek-ai/deepseek-harness)(DeepSeek Harness)插件:监控你的 **OpenCode GO 套餐**额度 —— 10 美元/月的订阅,按模型提供滚动 5 小时 / 每周 / 每月三个窗口的用量限额。

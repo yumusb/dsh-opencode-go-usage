@@ -2,6 +2,23 @@
 
 English | [中文](README.zh.md)
 
+> ## ⛔ Deprecated — merged into [`dsh-opencode-go-plus`](https://www.npmjs.com/package/dsh-opencode-go-plus) v1.2.0
+>
+> This package is no longer maintained. Its plan-usage widget (sidebar-footer bars for the rolling / weekly / monthly windows, countdowns, collapsed percent badge) is now a built-in feature of **`dsh-opencode-go-plus` ≥ 1.2.0**, depending on the same `OPENCODE_GO_API_KEY` and toggled from that plugin's settings card (**Show plan usage in the sidebar**). The `/opencode-go` command moved there as `/opencode-go-plus-usage`, and the same-origin `/opencode-go/usage` proxy became `/dsh-opencode-go-plus/usage`.
+>
+> **Migrate:**
+>
+> ```bash
+> dsh plugin --profile web add dsh-opencode-go-plus@1.2.0   # or newer
+> dsh plugin --profile web remove dsh-opencode-go-usage
+> ```
+>
+> With both installed you get **two** usage widgets in the sidebar — remove this one.
+>
+> **Not carried over:** the npm update badge, and the `x-opencode-session` fetch wrapper for `llm-pi-ai` routes — `dsh-opencode-go-plus` ships its own adapter, which sends that header itself, so it is never needed there.
+>
+> Every version of this package is deprecated on npm and prints the message above. The rest of this README documents the last release (v1.4.1) for reference.
+
 > ⚡ Get an **OpenCode GO plan**: [buycodingplan.com](https://buycodingplan.com/)
 
 A [DSH](https://github.com/deepseek-ai/deepseek-harness) (DeepSeek Harness) plugin that watches your **OpenCode GO plan** quota — the $10/month subscription that gives you usage limits on open-source models (rolling 5-hour, weekly, and monthly windows).
