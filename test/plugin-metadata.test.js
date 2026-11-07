@@ -18,7 +18,7 @@ test("package publishes DSH-localized Usage metadata", async () => {
 	assert.ok(manifest.files.includes("assets/*.svg"));
 	assert.match(icon, /^<svg\b/);
 	assert.ok(Buffer.byteLength(icon, "utf8") <= 256 * 1024);
-	assert.equal(manifest.version, "1.4.1");
+	assert.equal(manifest.version, "1.4.2");
 	assert.equal(typeof manifest.description, "string");
 	assert.equal(manifest.engines.node, ">=18");
 	assert.equal(en.meta.title, "OpenCode GO Usage");
